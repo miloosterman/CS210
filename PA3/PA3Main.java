@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOError;
 
 /*
  * Input file consists of:
@@ -31,7 +30,7 @@ public class PA3Main{
 
     private static ArrayList<String> readInput(){
         ArrayList<String> inputRes = new ArrayList<String>();
-        
+
         try{
             Scanner sc = new Scanner (new File("input.txt"));
 

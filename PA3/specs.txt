@@ -1,0 +1,36 @@
+/*
+ * Garden class that consists of rows and columns of plots
+ * Each plot can hold a single Plant, each element represented as 5x5 grid of cells
+ * Three categories - Trees, Flowers, Vegetables
+ * 
+ * Trees - grow up, (Oak, Willow, Banana, Coconut, Pine) 
+ * Trees should start at bottom middle of 5x5 grid
+ * 
+ * Vegetables - grow down, (Garlic, Zucchini, Tomato, Yam, Lettuce)
+ * Vegetables should start from top middle of 5x5 grid
+ * 
+ * Flowers - bloom as they grow, (Iris, Lily, Rose, Daisy, Tulip, Sunflower)
+ * Flowers should start in middle of 5x5
+ * 
+ * Use lowercase first letter of plant name to represent
+ * 
+ * 
+ * Command types:
+ * PLANT (x,y) plantType - plant a plantType to coords
+ * PRINT - read entire garden to stdout
+ * GROW num - each plant grows specified number of times
+ * GROW [num] (row,col) - grow specific plant at position, "can't grow there" if invalid
+ * GROW [num][plant] - grows plants of specified type num of times
+ * HARVEST - remove all veggies from garden
+ * HARVEST(row,col) - remove from specified coord, "can't harvest there" if invalid
+ * HARVEST[type] - harvest all veg of type
+ * PICK - pick all flowers
+ * PICK(row,col) - ''
+ * PICK[type] - ''
+ * CUT - ''
+ * CUT(row, col) - ''
+ * CUT[type] - ''
+ * 
+ * Never let garden be above 80 characters across
+ */
+  
