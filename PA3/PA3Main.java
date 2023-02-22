@@ -26,6 +26,15 @@ import java.io.FileNotFoundException;
 
 public class PA3Main{
     public static void main(String[] args) {
+        controlInterface();
+    }
+
+    private static void controlInterface(){
+        ArrayList<String> inputRes = readInput();
+        Garden mainGarden = createGarden(inputRes);
+        mainGarden.plant(0,0, "banana");
+        mainGarden.plant(0,1,"lily");
+        System.out.print(mainGarden.toString());
     }
 
     private static ArrayList<String> readInput(){
@@ -43,4 +52,22 @@ public class PA3Main{
 
         return inputRes;
     }
+
+private static Garden createGarden(ArrayList<String> inputRes){
+    int rows = 0;
+    int cols = 0;
+
+    for (String cmd : inputRes){
+        cmd = cmd.toLowerCase();
+        String [] words = cmd.split(" ");
+        if (cmd.startsWith("rows")){
+            rows = Integer.parseInt(words[1]);
+        } else if(cmd.startsWith("cols")){
+            cols = Integer.parseInt(words[1]);
+        }
+    }
+
+    return new Garden(rows, cols);
+
+}
 }
