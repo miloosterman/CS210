@@ -34,8 +34,11 @@ public class PA3Main {
     private static void controlInterface() {
         ArrayList<String> inputRes = readInput();
         Garden mainGarden = createGarden(inputRes);
-        mainGarden.plant(0, 0, "lily");
-        mainGarden.grow(4);
+        mainGarden.plant(1,0,"banana");
+        mainGarden.plant(0,0,"coconut");
+        mainGarden.plant(0,1,"oak");
+        System.out.print(mainGarden.toString());
+        mainGarden.remove("coconut", 'c');
         System.out.print(mainGarden.toString());
     }
 
@@ -76,7 +79,8 @@ public class PA3Main {
             } else if (cmd.startsWith("cols")) {
                 cols = Integer.parseInt(words[1]);
                 if (cols > MAX_COLS) {
-                    cols = 16;
+                    System.out.println("Too many plot columns.");
+                    System.exit(0);
                 }
             }
         }
