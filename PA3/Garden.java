@@ -13,8 +13,10 @@ public class Garden {
     public Plant[][] getCrops() {
         return this.crops;
     }
+
     /**
      * Create plant based on which set of plants the input is a type of
+     * 
      * @param row
      * @param col
      * @param plantType
@@ -28,8 +30,10 @@ public class Garden {
             crops[row][col] = new Vegetables(plantType.charAt(0));
         }
     }
+
     /**
      * Grow method for entire Garden, growing by amount input by user
+     * 
      * @param amount
      */
     public void grow(int amount) {
@@ -43,60 +47,134 @@ public class Garden {
             }
         }
     }
+
+    public void remove(String type) {
+        switch (type) {
+            case "flower":
+                for (Plant[] pArr : this.crops) {
+                    for (Plant p : pArr) {
+                        if (p instanceof Flowers) {
+                            p.remove();
+                            p = null;
+                        }
+                    }
+                }
+                break;
+            case "tree":
+                for (Plant[] pArr : this.crops) {
+                    for (Plant p : pArr) {
+                        if (p instanceof Trees) {
+                            p.remove();
+                            p = null;
+                        }
+                    }
+                }
+
+            case "vegetable":
+                for (Plant[] pArr : this.crops) {
+                    for (Plant p : pArr) {
+                        if (p instanceof Vegetables) {
+                            p.remove();
+                            p = null;
+                        }
+                    }
+                }
+        }
+    }
+
+    public void remove(String plantType, char firstLetter) {
+        if (checkType(plantType, FLOWERS)) {
+            for (Plant[] pArr : this.crops) {
+                for (Plant p : pArr) {
+                    if (p instanceof Flowers) {
+                        p.remove(firstLetter);
+                    }
+                }
+            }
+        } else if (checkType(plantType, TREES)) {
+            for (Plant[] pArr : this.crops) {
+                for (Plant p : pArr) {
+                    if (p instanceof Trees) {
+                        p.remove(firstLetter);
+                    }
+                }
+            }
+        } else if (checkType(plantType, VEGETABLES)) {
+            for (Plant[] pArr : this.crops) {
+                for (Plant p : pArr) {
+                    if (p instanceof Vegetables) {
+                        p.remove(firstLetter);
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Grow method for specific plot in Garden
+     * 
      * @param amount
      * @param row
      * @param col
      */
-    public void grow(int amount, int row, int col){
-        if (crops[row][col] instanceof Plant){
-            for (int i = 0; i < amount; i++){
+    public void grow(int amount, int row, int col) {
+        if (crops[row][col] instanceof Plant) {
+            for (int i = 0; i < amount; i++) {
                 crops[row][col].grow();
             }
         }
     }
 
-    public void grow(int amount, String type){
+    /**
+     * Overloaded grow method for class of vegetable
+     * @param amount
+     * @param type
+     */
+    public void grow(int amount, String type) {
         switch (type) {
             case "flower":
-            for (Plant[] pArr : this.crops) {
-                for (Plant p : pArr) {
-                    if (p instanceof Flowers) {
-                        for (int i = 0; i < amount; i++) {
-                            p.grow();
+                for (Plant[] pArr : this.crops) {
+                    for (Plant p : pArr) {
+                        if (p instanceof Flowers) {
+                            for (int i = 0; i < amount; i++) {
+                                p.grow();
+                            }
                         }
                     }
                 }
-            }
                 break;
             case "tree":
-            for (Plant[] pArr : this.crops) {
-                for (Plant p : pArr) {
-                    if (p instanceof Trees) {
-                        for (int i = 0; i < amount; i++) {
-                            p.grow();
+                for (Plant[] pArr : this.crops) {
+                    for (Plant p : pArr) {
+                        if (p instanceof Trees) {
+                            for (int i = 0; i < amount; i++) {
+                                p.grow();
+                            }
                         }
                     }
                 }
-            }
 
             case "vegetable":
-            for (Plant[] pArr : this.crops) {
-                for (Plant p : pArr) {
-                    if (p instanceof Vegetables) {
-                        for (int i = 0; i < amount; i++) {
-                            p.grow();
+                for (Plant[] pArr : this.crops) {
+                    for (Plant p : pArr) {
+                        if (p instanceof Vegetables) {
+                            for (int i = 0; i < amount; i++) {
+                                p.grow();
+                            }
                         }
                     }
                 }
-            }
-        
+
             default:
                 break;
         }
     }
-
+    /**
+     * Compare plantType argument to array of possible plant types, returning true if argument matches
+     * @param plantType
+     * @param testArr
+     * @return Boolean dependent on match
+     */
     public boolean checkType(String plantType, String[] testArr) {
         for (String s : testArr) {
             if (s == plantType) {
