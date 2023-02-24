@@ -24,50 +24,64 @@ import java.io.FileNotFoundException;
  * CUT[type] - ''
  */
 
-public class PA3Main{
+public class PA3Main {
+    private static final int MAX_COLS = 16;
+
     public static void main(String[] args) {
         controlInterface();
     }
 
-    private static void controlInterface(){
+    private static void controlInterface() {
         ArrayList<String> inputRes = readInput();
         Garden mainGarden = createGarden(inputRes);
-        mainGarden.plant(0,0, "banana");
-        mainGarden.plant(0,1,"lily");
+        mainGarden.plant(0, 0, "lily");
+        mainGarden.grow(4);
         System.out.print(mainGarden.toString());
     }
 
-    private static ArrayList<String> readInput(){
+    /**
+     * Open and read input file, returning result
+     * 
+     * @return inputRes
+     */
+    private static ArrayList<String> readInput() {
         ArrayList<String> inputRes = new ArrayList<String>();
 
-        try{
-            Scanner sc = new Scanner (new File("input.txt"));
+        try {
+            Scanner sc = new Scanner(new File("input.txt"));
 
-            while (sc.hasNextLine()){
+            while (sc.hasNextLine()) {
                 inputRes.add(sc.nextLine());
             }
-        } catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("File could not be found.");
         }
 
         return inputRes;
     }
+    /**
+     * Check input file for rows and columns, create Garden object from results
+     * @param inputRes
+     * @return Garden object
+     */
+    private static Garden createGarden(ArrayList<String> inputRes) {
+        int rows = 0;
+        int cols = 0;
 
-private static Garden createGarden(ArrayList<String> inputRes){
-    int rows = 0;
-    int cols = 0;
-
-    for (String cmd : inputRes){
-        cmd = cmd.toLowerCase();
-        String [] words = cmd.split(" ");
-        if (cmd.startsWith("rows")){
-            rows = Integer.parseInt(words[1]);
-        } else if(cmd.startsWith("cols")){
-            cols = Integer.parseInt(words[1]);
+        for (String cmd : inputRes) {
+            cmd = cmd.toLowerCase();
+            String[] words = cmd.split(" ");
+            if (cmd.startsWith("rows")) {
+                rows = Integer.parseInt(words[1]);
+            } else if (cmd.startsWith("cols")) {
+                cols = Integer.parseInt(words[1]);
+                if (cols > MAX_COLS) {
+                    cols = 16;
+                }
+            }
         }
+
+        return new Garden(rows, cols);
+
     }
-
-    return new Garden(rows, cols);
-
-}
 }
