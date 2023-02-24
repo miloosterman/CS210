@@ -13,10 +13,32 @@ public abstract class Plant {
             }
         }
     }
+
+    public abstract void grow();
+
+    public void remove(){
+        for (int i = 0; i < this.crop.length; i++){
+            for (int j = 0; j < this.crop[i].length; j++){
+                this.crop[i][j] = SOIL;
+            }
+        }
+    }
+
+    public void remove(char firstLetter){
+        for (int i = 0; i < this.crop.length; i++){
+            for (int j = 0; j < this.crop[i].length; j++){
+                if (this.crop[i][j] == firstLetter){
+                    this.crop[i][j] = SOIL;
+                }
+            }
+        }
+    }
+
     /**
-     * Print the row that is passed as an argument from crop
+     * Grow the row of crop according to passed argument
+     * 
      * @param row
-     * @return res
+     * @return
      */
     public String printRow(int row) {
         String res = "";
