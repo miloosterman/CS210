@@ -29,7 +29,7 @@ public class Garden {
         }
     }
     /**
-     * Grow function for entire Garden, growing by amount input by user
+     * Grow method for entire Garden, growing by amount input by user
      * @param amount
      */
     public void grow(int amount) {
@@ -41,6 +41,59 @@ public class Garden {
                     }
                 }
             }
+        }
+    }
+    /**
+     * Grow method for specific plot in Garden
+     * @param amount
+     * @param row
+     * @param col
+     */
+    public void grow(int amount, int row, int col){
+        if (crops[row][col] instanceof Plant){
+            for (int i = 0; i < amount; i++){
+                crops[row][col].grow();
+            }
+        }
+    }
+
+    public void grow(int amount, String type){
+        switch (type) {
+            case "flower":
+            for (Plant[] pArr : this.crops) {
+                for (Plant p : pArr) {
+                    if (p instanceof Flowers) {
+                        for (int i = 0; i < amount; i++) {
+                            p.grow();
+                        }
+                    }
+                }
+            }
+                break;
+            case "tree":
+            for (Plant[] pArr : this.crops) {
+                for (Plant p : pArr) {
+                    if (p instanceof Trees) {
+                        for (int i = 0; i < amount; i++) {
+                            p.grow();
+                        }
+                    }
+                }
+            }
+
+            case "vegetable":
+            for (Plant[] pArr : this.crops) {
+                for (Plant p : pArr) {
+                    if (p instanceof Vegetables) {
+                        for (int i = 0; i < amount; i++) {
+                            p.grow();
+                        }
+                    }
+                }
+            }
+        
+            default:
+                break;
         }
     }
 
