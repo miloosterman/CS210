@@ -33,13 +33,7 @@ public class PA3Main {
 
     private static void controlInterface() {
         ArrayList<String> inputRes = readInput();
-        Garden mainGarden = createGarden(inputRes);
-        mainGarden.plant(1,0,"banana");
-        mainGarden.plant(0,0,"coconut");
-        mainGarden.plant(0,1,"oak");
-        System.out.print(mainGarden.toString());
-        mainGarden.remove("coconut", 'c');
-        System.out.print(mainGarden.toString());
+        processCommands(inputRes);
     }
 
     /**
@@ -62,30 +56,52 @@ public class PA3Main {
 
         return inputRes;
     }
+
     /**
      * Check input file for rows and columns, create Garden object from results
+     * 
      * @param inputRes
      * @return Garden object
      */
     private static Garden createGarden(ArrayList<String> inputRes) {
-        int rows = 0;
-        int cols = 0;
+        String[] rowLine = inputRes.get(0).split(" ");
+        String[] colLine = inputRes.get(1).split(" ");
 
-        for (String cmd : inputRes) {
-            cmd = cmd.toLowerCase();
-            String[] words = cmd.split(" ");
-            if (cmd.startsWith("rows")) {
-                rows = Integer.parseInt(words[1]);
-            } else if (cmd.startsWith("cols")) {
-                cols = Integer.parseInt(words[1]);
-                if (cols > MAX_COLS) {
-                    System.out.println("Too many plot columns.");
-                    System.exit(0);
-                }
-            }
-        }
+        int rows = Integer.parseInt(rowLine[1]);
+        inputRes.remove(0);
+        int cols = Integer.parseInt(colLine[1]);
+        inputRes.remove(0);
 
         return new Garden(rows, cols);
 
+    }
+
+    private static void processCommands(ArrayList<String> inputRes) {
+        Garden mainGarden = createGarden(inputRes);
+        for (String s : inputRes) {
+            s = s.trim().toLowerCase();
+            String[] tokens = s.split(" ");
+
+            switch (tokens[0]) {
+                case "plant":
+                    int row = Integer.parseInt(tokens[1].substring(1, 2));
+                    int col = Integer.parseInt(tokens[1].substring(3, 4));
+                    String type = tokens[2];
+                    mainGarden.plant(row, col, type);
+                    break;
+                case "print":
+                    System.out.println(mainGarden.toString());
+                case "grow":
+                    if (tokens.length == 2){
+                        mainGarden.grow(Integer.parseInt(tokens[1]));
+                    }
+                    break;
+                case "harvest":
+                    mainGarden.remove("vegetable");
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
