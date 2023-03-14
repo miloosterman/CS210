@@ -3,36 +3,11 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-/*
- * Input file consists of:
- * rows: int
- * cols: int
- * 
- * PLANT (x,y) plantType - plant a plantType to coords
- * PRINT - read entire garden to stdout
- * GROW num - each plant grows specified number of times
- * GROW [num] (row,col) - grow specific plant at position, "can't grow there" if invalid
- * GROW [num][plant] - grows plants of specified type num of times
- * HARVEST - remove all veggies from garden
- * HARVEST(row,col) - remove from specified coord, "can't harvest there" if invalid
- * HARVEST[type] - harvest all veg of type
- * PICK - pick all flowers
- * PICK(row,col) - ''
- * PICK[type] - ''
- * CUT - ''
- * CUT(row, col) - ''
- * CUT[type] - ''
- */
 
 public class PA3Main {
-    private static final int MAX_COLS = 16;
 
     public static void main(String[] args) {
-        controlInterface();
-    }
-
-    private static void controlInterface() {
-        ArrayList<String> inputRes = readInput();
+        ArrayList<String> inputRes = readInput(args[0]);
         processCommands(inputRes);
     }
 
@@ -41,19 +16,20 @@ public class PA3Main {
      * 
      * @return inputRes
      */
-    private static ArrayList<String> readInput() {
+    private static ArrayList<String> readInput(String args) {
         ArrayList<String> inputRes = new ArrayList<String>();
 
         try {
-            Scanner sc = new Scanner(new File("input.txt"));
+            File file = new File(args);
+            Scanner sc = new Scanner(file);
 
             while (sc.hasNextLine()) {
                 inputRes.add(sc.nextLine());
             }
+            sc.close();
         } catch (FileNotFoundException e) {
             System.out.println("File could not be found.");
         }
-
         return inputRes;
     }
 
@@ -78,26 +54,81 @@ public class PA3Main {
 
     private static void processCommands(ArrayList<String> inputRes) {
         Garden mainGarden = createGarden(inputRes);
+        int row;
+        int col;
+        int amount;
+        String type;
         for (String s : inputRes) {
-            s = s.trim().toLowerCase();
-            String[] tokens = s.split(" ");
+            String sFormatted = s.trim().toLowerCase();
+            String[] tokens = sFormatted.split(" ");
+            if (!tokens[0].equals("plant") && !tokens[0].equals("")){
+                System.out.println("> " + s.toUpperCase());
+                if (!tokens[0].equals("print")){
+                    System.out.print("\n");
+                }
+            }
 
             switch (tokens[0]) {
                 case "plant":
-                    int row = Integer.parseInt(tokens[1].substring(1, 2));
-                    int col = Integer.parseInt(tokens[1].substring(3, 4));
-                    String type = tokens[2];
+                    row = Integer.parseInt(tokens[1].substring(1, 2));
+                    col = Integer.parseInt(tokens[1].substring(3, 4));
+                    type = tokens[2];
                     mainGarden.plant(row, col, type);
                     break;
                 case "print":
                     System.out.println(mainGarden.toString());
+                    break;
                 case "grow":
                     if (tokens.length == 2){
-                        mainGarden.grow(Integer.parseInt(tokens[1]));
+                        amount = Integer.parseInt(tokens[1]);
+                        mainGarden.grow(amount);
+                    } else if (tokens.length == 3 && tokens[2].endsWith(")")){
+                        amount = Integer.parseInt(tokens[1]);
+                        row = Integer.parseInt(tokens[2].substring(1, 2));
+                        col = Integer.parseInt(tokens[2].substring(3, 4));
+                        
+                        mainGarden.grow(amount, row, col);
+                    } else if (tokens.length == 3){
+                        amount = Integer.parseInt(tokens[1]);
+                        type = tokens[2];
+                        mainGarden.grow(amount, type);
                     }
                     break;
                 case "harvest":
-                    mainGarden.remove("vegetable");
+                    if (tokens.length == 1){
+                        mainGarden.remove("vegetable");
+                    } else if (tokens.length == 2 && tokens[1].endsWith(")")){
+                        row = Integer.parseInt(tokens[1].substring(1, 2));
+                        col = Integer.parseInt(tokens[1].substring(3, 4));
+                        mainGarden.remove("vegetable", row, col);
+                    } else if (tokens.length == 2){
+                        type = tokens[1];
+                        mainGarden.remove(type, type.charAt(0));
+                    }
+                    break;
+                case "pick":
+                    if (tokens.length == 1){
+                        mainGarden.remove("flower");
+                    } else if (tokens.length == 2 && tokens[1].endsWith(")")){
+                        row = Integer.parseInt(tokens[1].substring(1, 2));
+                        col = Integer.parseInt(tokens[1].substring(3, 4));
+                        mainGarden.remove("flower", row, col);
+                    } else if (tokens.length == 2){
+                        type = tokens[1];
+                        mainGarden.remove(type, type.charAt(0));
+                    }
+                    break;
+                case "cut":
+                    if (tokens.length == 1){
+                        mainGarden.remove("tree");
+                    } else if (tokens.length == 2 && tokens[1].endsWith(")")){
+                        row = Integer.parseInt(tokens[1].substring(1, 2));
+                        col = Integer.parseInt(tokens[1].substring(3, 4));
+                        mainGarden.remove("tree", row, col);
+                    } else if (tokens.length == 2){
+                        type = tokens[1];
+                        mainGarden.remove(type, type.charAt(0));
+                    }
                     break;
                 default:
                     break;
