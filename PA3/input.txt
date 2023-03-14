@@ -1,0 +1,11 @@
+rows: 3
+cols: 3
+
+plant (0,0) yam
+plant (0,1) lily
+
+print
+
+grow 2
+
+print
